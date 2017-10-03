@@ -1,0 +1,21 @@
+#!/bin/bash
+yum -y remove mysql-server mysql
+yum -y install compat-libtermcap ncurses-devel
+tar zxf mysql-5.1.55.tar.gz
+cd mysql-5.1.55/
+./configure  --prefix=/usr/local/mysql    --with-charset=utf8  --with-collation=utf8_general_ci  --with-extra-charsets=gbk,gb2312
+make
+make install
+cp support-files/my-medium.cnf /etc/my.cnf
+cp support-files/mysql.server /etc/init.d/mysqld
+chmod a+x /etc/rc.d/init.d/mysqld
+chkconfig --add mysqld
+useradd -M -u 27 -s /sbin/nologin mysql
+cd /usr/local/mysql/bin/
+./mysql_install_db --user=mysql
+chown -R root:mysql /usr/local/mysql/
+chown -R mysql /usr/local/mysql/var/
+ln -s /usr/local/mysql/bin/*  /usr/local/bin/
+ln -s /usr/local/mysql/lib/mysql/*  /usr/lib/
+ln -s /usr/local/mysql/include/mysql/*  /usr/include/
+/etc/init.d/mysqld start

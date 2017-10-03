@@ -1,0 +1,5 @@
+#!/bin/bash
+USED=$(free | grep "buffers/cache:" | awk '{print $3}')
+TOTAL=$(free | grep "Mem:" | awk '{print $2}')
+USAGE=$(expr $USED \* 100 / $TOTAL)
+echo "实际内存占用情况：$USAGE%"

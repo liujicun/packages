@@ -1,0 +1,22 @@
+#!/bin/bash
+#### 2011.10.10 by TsengYia. ####
+ORCL_BASE="/opt/oracle"
+ORCL_HOME="$ORCL_BASE/product/11.2.0/dbhome_1"
+SYSV_FILE="oracle11g.initscript"
+#### 1. 调整执行环境 ########################################
+$ORCL_BASE/oraInventory/orainstRoot.sh
+$ORCL_BASE/product/11.2.0/dbhome_1/root.sh
+grep ORACLE /etc/profile || echo "export ORACLE_BASE=$ORCL_BASE
+export ORACLE_HOME=$ORCL_HOME
+export ORACLE_OWNER=oracle
+export ORACLE_SID=orcl
+export ORACLE_TERM=xterm
+export PATH=\$PATH:\$ORACLE_HOME/bin" >> /etc/profile && . /etc/profile
+#### 2. 调整权限及实例配置 ##################################
+chown -R oracle:dba /var/tmp/.oracle
+sed -i 's/dbhome_1:N/dbhome_1:Y/g' /etc/oratab
+#### 3. 添加系统服务oracle ##################################
+cp support-files/$SYSV_FILE /etc/init.d/oracle
+chmod a+x /etc/init.d/oracle
+chkconfig --add oracle
+#### END ####################################################

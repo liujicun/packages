@@ -1,0 +1,20 @@
+#!/bin/bash
+#### 2011.10.10 by TsengYia. ####
+PKGS_DIR=$(dirname $0)
+PKGS_FILE1="linux_11gR2_database_1of2.zip"
+PKGS_FILE2="linux_11gR2_database_2of2.zip"
+#### 1. 解包 ################################################
+cd $PKGS_DIR
+[ -d database ] || (unzip $PKGS_FILE1 ; unzip $PKGS_FILE2)
+PKGS_DIR_REAL=$(pwd)
+#### 2. 启动安装脚本程序 ####################################
+xhost +
+if [ $# -ne 0 ] && [ "$1" = "--en" ] ; then
+    su - oracle -c "cd $PKGS_DIR_REAL/database ; env LANG=en_US.UTF-8 ./runInstaller"
+else
+    yum -y install java-1.6.0
+    cd /usr/lib/jvm/jre-1.6.0/lib
+    [ -f fontconfig.bfc.origin ] || ( mv fontconfig.bfc fontconfig.bfc.origin ; cp fontconfig.RedHat.6.0.bfc fontconfig.bfc )
+    su - oracle -c "cd $PKGS_DIR_REAL/database ; env LANG=zh_CN.UTF-8 ./runInstaller -jreLoc /usr/lib/jvm/jre-1.6.0"
+fi
+#### END ###################

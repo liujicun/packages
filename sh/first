@@ -1,0 +1,7 @@
+#!/bin/bash
+# This is my first Shell-Script.
+cd /boot
+echo "当前的目录位于:"
+pwd
+echo "其中以vml开头的文件包括："
+ls -lh vml*

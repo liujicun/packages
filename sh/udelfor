@@ -1,0 +1,6 @@
+#!/bin/bash
+ULIST=$(cat /root/users.txt)
+for UNAME in $ULIST
+do
+    userdel -r $UNAME
+done

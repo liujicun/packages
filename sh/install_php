@@ -1,0 +1,20 @@
+#!/bin/bash
+yum -y remove php
+yum -y install libxml2-devel libpng-devel pcre-devel
+tar zxf php-5.3.6.tar.gz
+cd php-5.3.6/
+./configure --prefix=/usr/local/php5  --with-mysql=/usr/local/mysql --with-config-file-path=/usr/local/php5 --with-gd --with-zlib --enable-mbstring --enable-fpm
+make
+make install
+cp php.ini-development /usr/local/php5/php.ini
+ln -s /usr/local/php5/bin/* /usr/local/bin/
+ln -s /usr/local/php5/sbin/* /usr/local/sbin/
+cd /usr/local/php5/etc/
+cp php-fpm.conf.default php-fpm.conf
+sed -i '/^;user/cuser\ =\ nginx' php-fpm.conf
+sed -i '/^;group/cgroup\ =\ nginx' php-fpm.conf
+sed -i 's/^;\(group = nobody\)/\1/g' php-fpm.conf
+sed -i 's/^;\(pid\)/\1/g' php-fpm.conf
+sed -i 's/^;\(pm.start_servers\)/\1/g' php-fpm.conf
+sed -i 's/^;\(pm.min_spare_servers\)/\1/g' php-fpm.conf
+sed -i 's/^;\(pm.max_spare_servers\)/\1/g' php-fpm.conf

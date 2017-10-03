@@ -1,0 +1,8 @@
+#!/bin/bash
+PREFIX="stu"
+i=1
+while [ $i -le 20 ]
+do
+	userdel -r ${PREFIX}$i
+	let i++
+done

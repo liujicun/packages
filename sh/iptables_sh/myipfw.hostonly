@@ -1,0 +1,27 @@
+#!/bin/bash
+# 1. 定义基本变量
+IPT="/sbin/iptables"
+CTL="/sbin/sysctl"
+# 2. 调整/proc参数
+$CTL -w net.ipv4.tcp_syncookies=1 &> /dev/null
+$CTL -w net.ipv4.tcp_syn_retries=3 &> /dev/null
+$CTL -w net.ipv4.tcp_synack_retries=3 &> /dev/null
+$CTL -w net.ipv4.tcp_fin_timeout=60 &> /dev/null
+$CTL -w net.ipv4.tcp_max_syn_backlog=3200 &> /dev/null
+# 3. 设置具体的防火墙规则
+# 3.1 删除自定义链、清空已有规则
+$IPT -t filter -X
+$IPT -t nat -X
+$IPT -t mangle -X
+$IPT -t raw -X
+$IPT -t filter -F
+$IPT -t nat -F
+$IPT -t mangle -F
+$IPT -t raw -F
+# 3.2 定义默认策略
+$IPT -P INPUT DROP
+$IPT -P FORWARD DROP
+$IPT -P OUTPUT ACCEPT
+# 3.3 设置filter表中的各种规则
+$IPT -A INPUT -p tcp --dport 80 -j ACCEPT
+$IPT -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT

@@ -1,0 +1,9 @@
+#!/bin/bash
+Mnum=$(uname -r | awk -F. '{print $1}')
+Snum=$(uname -r | awk -F. '{print $2}')
+if [ $Mnum -eq 2 ] && [ $Snum -gt 4 ]
+then
+    echo "内核版本为：$Mnum.$Snum"
+else
+    echo "内核版本太低，无法继续！"
+fi

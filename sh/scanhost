@@ -1,0 +1,11 @@
+#!/bin/bash
+TARGET=$(awk '{print $1}' /etc/ethers)
+echo "以下主机已开放匿名FTP服务："
+for IP in $TARGET
+do
+    wget ftp://$IP/ &> /dev/null
+	if [ $? -eq 0 ] ; then
+	    echo $IP
+		rm -rf index.html
+	fi
+done

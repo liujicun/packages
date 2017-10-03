@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "Running Processes: $(ps aux | wc -l)"
+echo "Login Users: $(who | wc -l)"
+echo "Usage of / Filesystem: $(df -h | grep "/$" | awk '{print $4}')"

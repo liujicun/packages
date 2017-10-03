@@ -1,0 +1,21 @@
+#!/bin/bash
+# 这是一个简化的MySQL数据库逻辑备份脚本
+# 1. 定义数据库连接、目标库信息
+MY_USER="operator"
+MY_PASS="pwd123"
+MY_HOST="192.168.4.22"
+MY_CONN="-u $MY_USER -p$MY_PASS -h $MY_HOST"
+MY_DB1="studydb"
+MY_DB2="coursedb"
+# 2. 定义备份目录、工具、时间、文件名主体
+BF_DIR="/opt/qnzx_dbbak/"
+BF_CMD="/usr/local/bin/mysqldump"
+BF_TIME=`date +%Y%m%d-%H%M`
+NAME_1="$MY_DB1-$BF_TIME"
+NAME_2="$MY_DB2-$BF_TIME"
+# 3. 先导出为.sql脚本，然后再进行压缩（打包后删除原文件）
+cd $BF_DIR/
+$BF_CMD $MY_CONN --databases $MY_DB1 > $NAME_1.sql
+$BF_CMD $MY_CONN --databases $MY_DB2 > $NAME_2.sql
+/bin/tar zcf $NAME_1.tar.gz $NAME_1.sql --remove &> /dev/null
+/bin/tar zcf $NAME_2.tar.gz $NAME_2.sql --remove &> /dev/null

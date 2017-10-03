@@ -1,0 +1,15 @@
+#!/bin/bash
+# 1. 定义网段地址、MAC列表文件
+NADD="192.168.4."
+FILE="/etc/ethers"
+# 2. 发送ARP请求，并记录反馈结果
+[ -f $FILE ] && /bin/cp -f $FILE $FILE.old            # 备份原有文件
+HADD=1                                                # 定义起始扫描地址 
+while [ $HADD -lt 128 ]
+do
+    arping -c 2 -w 1 ${NADD}${HADD} &> /dev/null
+	if [ $? -eq 0 ] ; then
+	   arp -n | grep ${NADD}${HADD} | awk '{print $1,$3}' >> $FILE
+	fi
+	let HADD++
+done

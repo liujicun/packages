@@ -1,0 +1,31 @@
+#!/bin/bash
+# chkconfig: - 90 10
+# description: Startup script for sleep Server
+
+case "$1" in
+start)
+    echo -n "正在启动sleep服务 ... "
+	if sleep 7200 &
+	then
+	    echo "OK"
+	fi
+	;;
+stop)
+    echo -n "正在停止sleep服务 ... "
+	pkill "sleep" &> /dev/null && echo "OK"
+	;;
+status)
+    if pgrep "sleep" &>/dev/null
+	then
+	    echo "sleep服务已经启动。"
+    else
+        echo "sleep服务已经停止。"
+	fi
+	;;
+restart)
+	$0 stop
+    $0 start
+	;;
+*)
+    echo "用法: $0 {start|stop|restart}"
+esac

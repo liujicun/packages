@@ -1,0 +1,7 @@
+#!/bin/bash
+# 自动编译安装httpd服务器的脚本
+cd /usr/src/httpd-2.2.17/
+./configure --prefix=/usr/local/httpd --enable-so &> /dev/null
+make &> /dev/null
+make install &> /dev/null
+# ……

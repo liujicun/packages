@@ -1,0 +1,7 @@
+#!/bin/bash
+MOUNT_DIR="/media/cdrom/"
+if [ ! -d $MOUNT_DIR ]
+then
+    mkdir -p $MOUNT_DIR
+fi
+# ……

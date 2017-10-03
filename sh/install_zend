@@ -1,0 +1,6 @@
+#!/bin/bash
+tar zxf ZendGuardLoader-php-5.3-linux-glibc23-i386.tar.gz
+cd ZendGuardLoader-php-5.3-linux-glibc23-i386/php-5.3.x/
+cp ZendGuardLoader.so /usr/local/php5/lib/php/
+echo 'zend_extension=/usr/local/php5/lib/php/ZendGuardLoader.so
+zend_loader.enable=1' >> /usr/local/php5/php.ini

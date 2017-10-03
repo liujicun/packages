@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ "$USER" != "root" ]
+then
+    echo "错误：非root用户，权限不足！"
+    exit 1
+fi
+fdisk -l /dev/sda
+

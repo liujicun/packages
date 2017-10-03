@@ -1,0 +1,16 @@
+#!/bin/bash
+rpm -q sysstat &> /dev/null
+if [ $? -eq 0 ]
+then
+    echo "已安装 `rpm -q sysstat`"
+else
+    echo "未安装，尝试自动安装"
+    RHEL_DIR="/media/cdrom/Server/"
+    if [ -d $RHEL_DIR ]
+    then
+        cd $RHEL_DIR
+        rpm -ivh sysstat-*.rpm && echo "安装完成。"
+    else
+        echo "错误：无法访问光盘目录：$RHEL_DIR"
+    fi
+fi

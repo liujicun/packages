@@ -1,0 +1,6 @@
+#!/bin/bash
+adder() {
+    expr $1 + $2
+}
+adder 12 34
+adder 56 789

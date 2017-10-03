@@ -1,0 +1,10 @@
+#!/bin/bash
+read -p "请输入一个1-100之间的整数: " END
+i=1
+SUM=0
+while [ $i -le $END ]
+do
+    SUM=$(expr $SUM + $i)
+    let i++
+done
+echo "从 1-$END 之间所有整数的和为 : $SUM"

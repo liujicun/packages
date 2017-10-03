@@ -1,0 +1,6 @@
+#!/bin/bash
+TARFILE=beifen-`date +%s`.tgz
+tar zcf $TARFILE $* &> /dev/null
+echo "已执行 $0 脚本，"
+echo "共完成 $# 个对象的备份"
+echo "具体内容包括： $*"

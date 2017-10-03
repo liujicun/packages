@@ -1,0 +1,44 @@
+yum install gcc gcc-c++ libxml2 libxml2-devel  bzip2-devel   curl-devel  libjpeg-devel  libpng-devel   freetype-devel  libmcrypt-devel  mysql-devel -y
+echo "#################################"
+echo "#######install php 5.4 ##########"
+echo "#################################"
+wget http://cn2.php.net/distributions/php-5.4.36.tar.bz2
+tar jxvf php-5.4.36.tar.bz2
+cd php-5.4.36
+./configure --prefix=/usr/local/php --enable-fpm --enable-ftp --enable-bcmath \
+            --enable-mbstring --enable-shmop --enable-zip --with-bz2 --enable-soap \
+            --enable-sockets --with-gettext --with-pear --with-pcre-dir \
+            --with-curl=/usr/include/curl --with-mysqli=/usr/bin/mysql_config \
+            --with-zlib-dir=/usr/include/zlib.h --with-mhash=/usr/include/mhash.h \
+            --with-mcrypt=/usr/include/mcrypt.h --with-freetype-dir=/usr/local/lib \
+           --with-gd --with-jpeg-dir --with-png-dir --enable-gd-native-ttf \
+           --with-pear    --with-mysql    --with-pdo-mysql && make -j4 && make install
+cp php.ini-development /usr/local/php/lib/php.ini
+cd ..
+echo "#################################"
+echo "#######install memcache##########"
+echo "#################################"
+wget http://pecl.php.net/get/memcache-2.2.7.tgz
+cd memcache-2.2.7
+/usr/local/php/bin/phpize
+./configure   --with-php-config=/usr/local/php//bin/php-config && make -j4 && make install
+cd ..
+echo "#################################"
+echo "#######install memcached##########"
+echo "#################################"
+wget https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz
+tar zxvf libmemcached-1.0.18.tar.gz
+cd libmemcached-1.0.18
+./configure --prefix=/usr/local/libmemcached && make -j4 && make install
+cd ..
+wget http://pecl.php.net/get/memcached-2.2.0.tgz
+tar zxvf memcached-2.2.0.tgz
+cd memcached-2.2.0
+/usr/local/php/bin/phpize
+./configure   --with-php-config=/usr/local/php//bin/php-config   --disable-memcached-sasl --with-libmemcached-dir=/usr/local/libmemcached && make -j4 && make install
+echo "extension_dir = "/usr/local/php/lib/php/extensions/no-debug-non-zts-20100525/"">> /usr/local/php/lib/php.ini
+echo "extension = "memcache.so"" >>/usr/local/php/lib/php.ini
+echo "extension = "memcached.so"" >>/usr/local/php/lib/php.ini
+echo "#################################"
+echo "#######install succeess##########"
+echo "#################################"
